@@ -1,0 +1,7 @@
+*
+!/**/
+!*.*
+ninja/
+obj/
+*.exe
+*.ninja
