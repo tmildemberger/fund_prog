@@ -1,6 +1,7 @@
 *
 !/**/
 !*.*
+!metal
 ninja/
 obj/
 *.exe
