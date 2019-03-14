@@ -163,8 +163,8 @@ while True:
                 run_file = os.path.join(os.getcwd(), os.path.split(os.getcwd())[1])
             else:
                 run_file = os.path.join(os.getcwd(), tokens[1])
-            prename = ''
-            if sys.platform.startswith('linux'):
-                prename = './'
-            os.system(prename + run_file + ' ' + ' '.join(tokens[2:]))
+            #prename = ''
+            #if sys.platform.startswith('linux'):
+            #    prename = './'
+            os.system(run_file + ' ' + ' '.join(tokens[2:]))
     pass
