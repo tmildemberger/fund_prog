@@ -108,7 +108,7 @@ def shuriken(path_to_metal):
                                 print('fill the thing in the file')
                             else:
                                 # print('all right')
-                                execs[name]['libs'].append(libs[wanted_lib])
+                                execs[name]['libs'].append((wanted_lib, libs[wanted_lib]))
                         else:
                             print('couldn\'t find')
 
@@ -130,7 +130,7 @@ def shuriken(path_to_metal):
                 # print(tokens)
                 if tokens[2] != 'in':
                     print('syntax error')
-                libs[tokens[1]] = tokens[3][:-1]
+                libs[tokens[1]] = os.path.abspath(tokens[3][:-1])
                 # print(libs)
             
             if tokens[0] == 'compiler_flags':
@@ -210,8 +210,8 @@ def shuriken(path_to_metal):
                     pass
                 if 'libs' in pack:
                     ninja_builds += '  c_flags ='
-                    for lib in pack['libs']:
-                        ninja_builds += ' -I%s' % lib + 'include'
+                    for lib, lib_path in pack['libs']:
+                        ninja_builds += ' -I%s' % os.path.join(lib_path, 'include')
                     ninja_builds += '\n'
                     pass
                 pass
@@ -239,8 +239,8 @@ def shuriken(path_to_metal):
                     pass
                 if 'libs' in pack:
                     ninja_builds += '  cxx_flags ='
-                    for lib in pack['libs']:
-                        ninja_builds += ' -I%s' % lib + 'include'
+                    for lib, lib_path in pack['libs']:
+                        ninja_builds += ' -I%s' % os.path.join(lib_path, 'include')
                     ninja_builds += '\n'
                     pass
                 pass
@@ -256,6 +256,16 @@ def shuriken(path_to_metal):
         # print(len(real_files))
         # if len(real_files > 1)
         ninja_builds += 'build %s%s: link_exe %s\n' % (target, exe_ext, ' '.join(real_files))
+        if 'libs' in pack:
+            ninja_builds += '  ld_flags ='
+            for lib, lib_path in pack['libs']:
+                ninja_builds += ' -L%s' % os.path.join(lib_path, 'lib')
+            ninja_builds += '\n'
+            ninja_builds += '  ld_libs ='
+            for lib, lib_path in pack['libs']:
+                ninja_builds += ' -l%s' % lib
+            ninja_builds += '\n'
+            pass
 
     ninja_file = 'builddir = ninja\n'
     ninja_file += ninja_rules
