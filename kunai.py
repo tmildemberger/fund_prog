@@ -138,8 +138,11 @@ while True:
                 build_file = os.path.join(build_dir, 'build.ninja')
                 if os.path.isfile(metal_file):
                     last_modified = os.path.getmtime(metal_file)
+                    # print(last_modified)
+                    # print(os.path.getmtime(build_file))
                     if not os.path.isfile(build_file) or \
                        last_modified > os.path.getmtime(build_file):
+                        print('shuriken')
                         import shuriken
                         # print('running shuriken.py to update or create build.ninja')
                         shuriken.shuriken(metal_file)

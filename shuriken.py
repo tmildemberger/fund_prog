@@ -18,7 +18,9 @@ def shuriken(path_to_metal):
     execs = {}
     curr_compile_flags = {}
     curr_section = ''
-    default_flags = {'cpp':'-std=c++17 -Wall -pedantic', 'c':'-std=c99 -Wall -pedantic'}
+    # default_flags = {'cpp':'-std=c++17 -Wall -pedantic', 'c':'-std=c99 -Wall -Wextra -Wformat-nonliteral -Wcast-align -Wpointer-arith -Wbad-function-cast -Wmissing-prototypes -Wstrict-prototypes -Wmissing-declarations -Winline -Wundef -Wnested-externs -Wcast-qual -Wshadow -Wwrite-strings -Wno-unused-parameter -Wfloat-equal -pedantic -ansi'}
+    default_flags = {'cpp':'-std=c++17 -Wall -pedantic', 'c':'-Wall -Wextra -Wformat-nonliteral -Wcast-align -Wpointer-arith -Wbad-function-cast -Wmissing-prototypes -Wmissing-declarations -Winline -Wundef -Wnested-externs -Wcast-qual -Wshadow -Wwrite-strings -Wno-unused-parameter -Wfloat-equal -pedantic -ansi -std=c99'}
+    curr_compile_flags = default_flags.copy()
     walk_entries = []
     sources = []
     if os.path.isdir('src'):
