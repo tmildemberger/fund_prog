@@ -1,7 +1,9 @@
 from cmd import Cmd
+import os
+cwd = os.getcwd()
 
 class Kunai(Cmd):
-    prompt = '$ '
+    prompt = os.path.relpath(os.getcwd(), cwd) + ' $ '
     def do_exit(self, inp):
         return True
     known_commands = ['exit', 'quit']    
