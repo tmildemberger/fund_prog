@@ -4,7 +4,8 @@ class Kunai(Cmd):
     prompt = '$ '
     def do_exit(self, inp):
         return True
-    known_commands = ['exit', 'quit']    
+    known_commands = ['exit', 'quit', 'create', 
+'run', 'build', 'in', 'ls', 'dir']    
     def default(self, inp):
         tokens = inp.strip().split()
         i = 0
@@ -27,6 +28,7 @@ class Kunai(Cmd):
             else:
                 print('unimplemented')
     do_quit = do_exit
+    do_EOF = do_exit
 
 k = Kunai()
 k.cmdloop()
