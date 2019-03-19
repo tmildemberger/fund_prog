@@ -31,6 +31,28 @@ class Kunai(Cmd):
                 print('unimplemented')
     do_quit = do_exit
     do_EOF = do_exit
+    places = [cwd]
+    def do_in(self, inp):
+        tokens = inp.split()
+        print(tokens)
+        print(len(tokens))
+        if len(tokens) != 1:
+            print("error: wrong number of arguments to in")
+            print("usage: in [dir]")
+        if os.path.isdir(tokens[0]):
+            self.places.append(tokens[0])
+            os.chdir(tokens[0])
+            prompt = os.path.relpath(os.getcwd(), cwd) + ' $ '
+        else:
+            for place in reversed(self.places):
+                idx = self.places.index(place)
+                possible_dir = os.path.join(cwd, *self.places[:idx+1], tokens[0])
+                if os.path.isdir(possible_dir):
+                    self.places = self.places[:idx+1]
+                    self.places.append(tokens[0])
+                    os.chdir(possible_dir)
+                    prompt = os.path.relpath(os.getcwd(), cwd) + ' $ '
+                    break
 
 k = Kunai()
 k.cmdloop()
