@@ -157,10 +157,7 @@ while True:
             pass
         if found == 'run':
             if len(tokens) < 2:
-                print('error: wrong number of arguments to run')
-                print('usage: run [program] {args...}')
-                print('usage: program can be . to mean the dir name')
-                print('usage: there can be 0 or more args')
+                tokens.append('.')
             wd = os.getcwd()
             if tokens[1] == '.':
                 run_file = os.path.join(os.getcwd(), os.path.split(os.getcwd())[1])
