@@ -219,5 +219,6 @@ class Kunai(Cmd):
         # print(begidx)
         # print(endidx)
         return [i for i in os.listdir(os.getcwd()) if i.startswith(text)]
+    complete_cd = complete_in
 
 Kunai().check().cmdloop()
