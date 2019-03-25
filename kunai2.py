@@ -188,16 +188,16 @@ class Kunai(Cmd):
             print('ninja not found, I\'m gonna install it then')
             wd = os.getcwd()
             os.chdir(cwd)
-            os.system('git clone git://github.com/ninja-build/ninja.git')
+            os.system('git clone https://github.com/ninja-build/ninja.git')
             os.chdir('ninja')
             os.system('git checkout release')
             # exec(open('configure.py').read())
             # import sys
             import subprocess
-            add = ''
             if sys.platform.startswith('win'):
-                add = '--platform=mingw'
-            subprocess.run([sys.executable, 'configure.py', '--bootstrap', add])
+                subprocess.run([sys.executable, 'configure.py', '--bootstrap', '--platform=mingw'])
+            else:
+                subprocess.run([sys.executable, 'configure.py', '--bootstrap'])
             # os.system('./configure.py --bootstrap')
             os.environ['PATH'] += os.path.pathsep + os.getcwd()
             os.chdir(wd)
