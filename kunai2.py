@@ -47,6 +47,8 @@ class Kunai(Cmd):
         result = []
         for elem in subs:
             result.append(common_part.format(elem))
+        if len(subs) == 0:
+            result.append(common_part)
         return result
     
     def default(self, inp):
