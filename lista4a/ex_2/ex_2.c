@@ -1,12 +1,12 @@
 #include <stdio.h>
 
 int main() {
-    int n, nfatorial;
-    scanf("%d", &n); // para n de 0 a 12
-    nfatorial = 1;
-    while (n > 0) {
-      nfatorial *= n--;
+    int senha;
+    scanf("%d", &senha);
+    while (senha != 2002) {
+      printf("Senha invalida\n");
+      scanf("%d", &senha);
     }
-    printf("%d\n", nfatorial);
+    printf("Acesso permitido\n");
     return 0;
 }

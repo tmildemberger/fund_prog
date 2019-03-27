@@ -1,36 +1,13 @@
 #include <stdio.h>
-#include <stdlib.h>
-#include <time.h>
 
 int main() {
-    srand(time(NULL));
-    int pseudoaleatorio = rand() % 500 + 1;
-    int tentativas = 1;
-    int chute;
-    scanf("%d", &chute);
-    if (chute > pseudoaleatorio) {
-        printf("o chute foi alto\n");
-    } else if (chute < pseudoaleatorio) {
-        printf("o chute foi baixo\n");
+    int numero, soma = 0, i = 1;
+    scanf("%d", &numero);
+    while (i <= numero/2) {
+      if (numero%i == 0) soma += i++;
+      else i++;
     }
-    while (chute != pseudoaleatorio) {
-        scanf("%d", &chute);
-        ++tentativas;
-        if (chute > pseudoaleatorio) {
-            printf("o chute foi alto\n");
-        } else if (chute < pseudoaleatorio) {
-            printf("o chute foi baixo\n");
-        }
-    }
-    printf("acertou em %d tentativa(s)! ", tentativas);
-    if (tentativas < 4) {
-        printf("\\o/\n");
-    } else if (tentativas < 7) {
-        printf(":-D\n");
-    } else if (tentativas < 11) {
-        printf(":-)\n");
-    } else {
-        printf(":~(\n");
-    }
+    if (soma == numero) printf("e perfeito\n");
+    else printf("nao e perfeito\n");
     return 0;
 }

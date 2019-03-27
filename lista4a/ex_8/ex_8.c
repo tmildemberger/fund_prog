@@ -1,13 +1,20 @@
 #include <stdio.h>
 
 int main() {
-    int numero, soma = 0, i = 1;
+    int penultimo = 0, ultimo = 1;
+    int numero;
     scanf("%d", &numero);
-    while (i <= numero/2) {
-      if (numero%i == 0) soma += i++;
-      else i++;
+    if (numero > 0) {
+        printf("%d\n", penultimo);
     }
-    if (soma == numero) printf("e perfeito\n");
-    else printf("nao e perfeito\n");
+    if (numero > 1) {
+        printf("%d\n", ultimo);
+    }
+    while (numero-- > 2) {
+        int proximo = penultimo + ultimo;
+        penultimo = ultimo;
+        ultimo = proximo;
+        printf("%d\n", proximo);
+    }
     return 0;
 }

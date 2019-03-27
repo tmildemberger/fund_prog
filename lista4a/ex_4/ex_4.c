@@ -1,12 +1,16 @@
 #include <stdio.h>
 
 int main() {
-    int senha;
-    scanf("%d", &senha);
-    while (senha != 2002) {
-      printf("Senha invalida\n");
-      scanf("%d", &senha);
+    int i, positivos = 0;
+    float num, soma = 0;
+    for (i = 0; i < 6; ++i) {
+        scanf("%f", &num);
+        if (num > 0) {
+            ++positivos;
+            soma += num;
+        }
     }
-    printf("Acesso permitido\n");
+    printf("%d valores positivos\n", positivos);
+    printf("Media dos positivos: %.1f\n", soma / positivos);
     return 0;
 }

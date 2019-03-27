@@ -1,20 +1,36 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
 
 int main() {
-    int penultimo = 0, ultimo = 1;
-    int numero;
-    scanf("%d", &numero);
-    if (numero > 0) {
-        printf("%d\n", penultimo);
+    srand(time(NULL));
+    int pseudoaleatorio = rand() % 500 + 1;
+    int tentativas = 1;
+    int chute;
+    scanf("%d", &chute);
+    if (chute > pseudoaleatorio) {
+        printf("o chute foi alto\n");
+    } else if (chute < pseudoaleatorio) {
+        printf("o chute foi baixo\n");
     }
-    if (numero > 1) {
-        printf("%d\n", ultimo);
+    while (chute != pseudoaleatorio) {
+        scanf("%d", &chute);
+        ++tentativas;
+        if (chute > pseudoaleatorio) {
+            printf("o chute foi alto\n");
+        } else if (chute < pseudoaleatorio) {
+            printf("o chute foi baixo\n");
+        }
     }
-    while (numero-- > 2) {
-        int proximo = penultimo + ultimo;
-        penultimo = ultimo;
-        ultimo = proximo;
-        printf("%d\n", proximo);
+    printf("acertou em %d tentativa(s)! ", tentativas);
+    if (tentativas < 4) {
+        printf("\\o/\n");
+    } else if (tentativas < 7) {
+        printf(":-D\n");
+    } else if (tentativas < 11) {
+        printf(":-)\n");
+    } else {
+        printf(":~(\n");
     }
     return 0;
 }

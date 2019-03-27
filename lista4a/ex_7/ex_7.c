@@ -1,11 +1,12 @@
 #include <stdio.h>
 
 int main() {
-    float altura_chico = 1.5, altura_ze = 1.1;
-    int anos = 0;
-    while (altura_chico + anos * 0.02 > altura_ze + anos * 0.03) {
-        ++anos;
+    int n, nfatorial;
+    scanf("%d", &n); // para n de 0 a 12
+    nfatorial = 1;
+    while (n > 0) {
+      nfatorial *= n--;
     }
-    printf("Levarao %d anos para ze ficar mais alto que chico\n", anos);
+    printf("%d\n", nfatorial);
     return 0;
 }
