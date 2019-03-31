@@ -19,7 +19,7 @@ def shuriken(path_to_metal):
     curr_compile_flags = {}
     curr_section = ''
     # default_flags = {'cpp':'-std=c++17 -Wall -pedantic', 'c':'-std=c99 -Wall -Wextra -Wformat-nonliteral -Wcast-align -Wpointer-arith -Wbad-function-cast -Wmissing-prototypes -Wstrict-prototypes -Wmissing-declarations -Winline -Wundef -Wnested-externs -Wcast-qual -Wshadow -Wwrite-strings -Wno-unused-parameter -Wfloat-equal -pedantic -ansi'}
-    default_flags = {'cpp':'-std=c++17 -Wall -pedantic', 'c':'-Wall -Wextra -Wformat-nonliteral -Wcast-align -Wpointer-arith -Wbad-function-cast -Wmissing-prototypes -Wmissing-declarations -Winline -Wundef -Wnested-externs -Wcast-qual -Wshadow -Wwrite-strings -Wno-unused-parameter -Wfloat-equal -pedantic -ansi -std=c99'}
+    default_flags = {'cpp':'-std=c++17 -Wall -pedantic', 'c':'-Wall -Wextra -Wformat-nonliteral -Wcast-align -Wpointer-arith -Wbad-function-cast -Wmissing-prototypes -Wmissing-declarations -Winline -Wundef -Wnested-externs -Wcast-qual -Wshadow -Wwrite-strings -Wno-unused-parameter -Wfloat-equal -pedantic -std=c99'}
     curr_compile_flags = default_flags.copy()
     walk_entries = []
     sources = []
@@ -227,9 +227,9 @@ def shuriken(path_to_metal):
                     ninja_rules += '  deps = gcc\n\n'
                     lang_rules.append('cpp')
                     pass
-                obj_dir = 'obj\\'
+                obj_dir = 'obj/'
                 if pack['section']:
-                    obj_dir = pack['section'] + '_obj\\'
+                    obj_dir = pack['section'] + '_obj/'
                     pass
                 ninja_builds += 'build %s%s%s: compile_cpp %s\n' % (obj_dir, file, obj_ext, file)
                 real_files.append('%s%s%s' % (obj_dir, file, obj_ext))
