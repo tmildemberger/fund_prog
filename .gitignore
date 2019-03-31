@@ -2,6 +2,7 @@
 !/**/
 !*.*
 !metal
+.vscode/
 ninja/
 obj/
 *.exe
