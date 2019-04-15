@@ -154,6 +154,7 @@ class Kunai(Cmd):
             print('usage: build {dir}')
             print('usage: dir may be ommited to build current dir')
         wd = os.getcwd()
+        # print(wd)
         build_dir = ''
         if len(tokens) == 1:
             if os.path.isdir(tokens[0]):
@@ -174,6 +175,7 @@ class Kunai(Cmd):
                     print('shuriken')
                     import shuriken
                     # print('running shuriken.py to update or create build.ninja')
+                    # print(metal_file)
                     shuriken.shuriken(metal_file)
                 # print('running ninja to actually build the project')
                 os.chdir(build_dir)

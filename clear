@@ -1,0 +1,1 @@
+rm -ri `find | grep -P '.*?(ninja|obj|exe).*?' -xo | sed -e ':a;N;s/\n/ /;ta'`

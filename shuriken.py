@@ -121,6 +121,11 @@ class metal_parser():
 
     execs = {}
     # found_configs = {}
+    def __init__(self):
+    	self.execs = dict()
+    	self.libs = dict()
+    	self.linker_f = dict()
+    	self.compiler_f = dict()
 
     def set_found_configs(self, found_cfgs):
         self.found_configs = found_cfgs.copy()
@@ -147,6 +152,7 @@ class metal_parser():
             if accept and not discarted:
                 result.append(file)
         result.sort()
+        # print(result)
         return result
         pass
 
@@ -169,6 +175,7 @@ class metal_parser():
             libraries = tokens[start + 1:]
 
         files = os.listdir()
+        # print(files)
         build_files = self.matches(files, selectors)
         # print(build_files)
 
@@ -476,6 +483,8 @@ def shuriken(path_to_metal):
     before = os.getcwd()
     if os.path.dirname(path_to_metal) != os.getcwd():
         os.chdir(os.path.dirname(path_to_metal))
+    # print(os.getcwd())
+    # print(path_to_metal)
     # print('hello')
     # libs = {}
     # execs = {}
@@ -493,6 +502,7 @@ def shuriken(path_to_metal):
     # walk_entries += [(sources, [], os.listdir(sources))]
     # print(path_to_metal)
     par = metal_parser()
+    # print(par.execs)
     par.set_found_configs(config_files)
     with open(path_to_metal) as file:
         lines = file.readlines()
@@ -648,7 +658,7 @@ def shuriken(path_to_metal):
             
         #     line = file.readline()
     # print('\n')
-    # print(execs)
+    # print(par.execs)
 
     ninja = par.gen_ninja()
     # ninja_rules = ''
