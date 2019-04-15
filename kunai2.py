@@ -81,25 +81,49 @@ class Kunai(Cmd):
     places = [cwd]
     def do_create(self, inp):
         tokens = inp.split()
-        if len(tokens) != 3 or tokens[0] != 'in':
-            print("error: wrong number of arguments to create")
-            print("usage: create in [dir] [name]")
+        if 'in' not in tokens:
+            print("error: ill-formed create")
+            print("usage: create \{c|cpp\} in [dir] [name]")
             print("usage: [name] can contain (from-to), including to")
+            print("usage: optional \{c|cpp\} selector (defaults to c)")
+        # elif len(tokens) not in [3, 4] or tokens[0] != 'in':
+        #     print("error: wrong number of arguments to create")
+        #     print("usage: create \{c|cpp\} in [dir] [name]")
+        #     print("usage: [name] can contain (from-to), including to")
+        #     print("usage: optional \{c|cpp\} selector (defaults to c)")
         else:
-            # print("if {0} not exist, creating {0}".format(tokens[1]))
-            projects = self.get_projects(tokens[2])
-            for proj in projects:
-                dir_name = os.path.join(tokens[1], proj)
-                os.makedirs(dir_name, exist_ok=True)
-                with open(os.path.join(dir_name, 'metal'), "w") as metal:
-                    metal.write("exec {} *.c".format(proj))
+            lang = 'c'
+            if tokens[0] in ['c', 'cpp']:
+                lang = tokens[0]
+                tokens = tokens[1:]
+            if len(tokens) != 3 or tokens[0] != 'in':
+                print("error: wrong number of arguments to create")
+                print("usage: create \{c|cpp\} in [dir] [name]")
+                print("usage: [name] can contain (from-to), including to")
+                print("usage: optional \{c|cpp\} selector (defaults to c)")
+            else:
+                # print("if {0} not exist, creating {0}".format(tokens[1]))
+                projects = self.get_projects(tokens[2])
+                for proj in projects:
+                    dir_name = os.path.join(tokens[1], proj)
+                    os.makedirs(dir_name, exist_ok=True)
+                    with open(os.path.join(dir_name, 'metal'), "w") as metal:
+                        metal.write("exec . *.{}".format(lang))
 
-                with open(os.path.join(dir_name, proj + '.c'), "w") as c_file:
-                    c_file.write("#include <stdio.h>\n\n")
-                    c_file.write("int main() {\n")
-                    c_file.write("    printf(\"Hello {} world\\n\");\n".format(proj))
-                    c_file.write("    return 0;\n")
-                    c_file.write("}")
+                    if lang == 'c':
+                        with open(os.path.join(dir_name, proj + '.c'), "w") as c_file:
+                            c_file.write("#include <stdio.h>\n\n")
+                            c_file.write("int main() {\n")
+                            c_file.write("    printf(\"Hello {} world\\n\");\n".format(proj))
+                            c_file.write("    return 0;\n")
+                            c_file.write("}")
+                    elif lang == 'cpp':
+                        with open(os.path.join(dir_name, proj + '.cpp'), "w") as cpp_file:
+                            cpp_file.write("#include <iostream>\n\n")
+                            cpp_file.write("int main() {\n")
+                            cpp_file.write("    std::cout << \"Hello {} world\\n\";\n".format(proj))
+                            cpp_file.write("    return 0;\n")
+                            cpp_file.write("}")
 
     def do_in(self, inp):
         tokens = inp.split()
