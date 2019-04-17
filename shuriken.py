@@ -87,6 +87,7 @@ def get_config_files():
     # before = os.getcwd()
     # print(os.path.dirname(os.path.realpath(__file__)))
     config_folder = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'config')
+    os.makedirs(config_folder, exist_ok=True)
     files = {}
     for fl in os.listdir(config_folder):
         if fl.endswith('.cfg'):
