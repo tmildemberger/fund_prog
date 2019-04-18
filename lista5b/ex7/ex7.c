@@ -20,13 +20,16 @@ int main() {
     else ePiramidal = 1;
     
     while (n > 0) {
-        if (n - i < 0) ePiramidal = 0;
+        if (n - i < 0) {
+	    ePiramidal = 0;
+	    bloco(n);
+	}
         else seqImpar = bloco(i);
         
         if (seqImpar == -1) ePiramidal = 0;
         else if (seqImpar == ultSeqImpar) ePiramidal = 0;
         
-        printf("%d", ePiramidal);
+        //printf("%d", ePiramidal);
 	ultSeqImpar = seqImpar;
         n -= i++;
         m++;
@@ -52,7 +55,6 @@ int bloco (int n) {
         scanf("%d", &m);
         if (impar(m) != seqImpar) {
 	    seqImpar = -1;
-	    break;
 	}
     
     }    
