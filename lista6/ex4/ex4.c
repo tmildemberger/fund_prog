@@ -15,22 +15,22 @@ int divide(int *m, int *n, int d) {
     int div_algum = 0;
     if ((*m) % d == 0) {
         (*m) /= d;
-	div_algum = 1;
+        div_algum = 1;
     }
     if ((*n) % d == 0) {
         (*n) /= d;
-	div_algum = 1;
+        div_algum = 1;
     }
     return div_algum;
 }
 
 int mmc(int m, int n) {
     int div = 2, minimo = 1;
-    while (m != 1 && n != 1) {
+    while (m != 1 || n != 1) {
         while (divide(&m, &n, div)) {
             minimo *= div;
-	}
-	div++;
+        }
+        div++;
     }
     return minimo;
 }
