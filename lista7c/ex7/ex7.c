@@ -34,7 +34,7 @@ int tiraDuplicados(int *v, int tam) {
     int nRestante = tam, i, j, k;
     for (i = tam-1; i > 0; i--) {
 
-        for(j = i - 1; j > 0; j--) {
+        for(j = i - 1; j >= 0; j--) {
             if (v[i] == v[j]) {
 
                 nRestante--;
@@ -111,5 +111,10 @@ void uniao(int *v1, int tam1, int *v2, int tam2, int *v3, int *tam3){
 
     copiarVetor(v1, tam1, v3);
     copiarVetor(v2, tam2, v3 + tam1);
+    int i;
+    for (i = 0; i < tam1 + tam2; ++i) {
+        printf("%d ", v3[i]);
+    }
+    printf("\n");
     *tam3 = tiraDuplicados(v3,tam1+tam2);
 }
