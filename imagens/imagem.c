@@ -166,9 +166,9 @@ unsigned long getLittleEndianULong (unsigned char* buffer)
  *
  * Par�metros: FILE* stream: arquivo a ser lido. Supomos que j� est� aberto.
  *             unsigned long* offset: par�metro de sa�da, � o deslocamento dos
- *               dados a partir do in�cio do arquivo.
+ *               dados a partir do início do arquivo.
  *
- * Valor de Retorno: 1 se n�o ocorreram erros, 0 do contr�rio. */
+ * Valor de Retorno: 1 se não ocorreram erros, 0 do contrário. */
 
 int leHeaderBitmap (FILE* stream, unsigned long* offset)
 {
@@ -286,7 +286,8 @@ int leHeaderDIB (FILE* stream, unsigned long* largura, unsigned long* altura)
 
 int leDados (FILE* stream, Imagem* img)
 {
-	unsigned long long i, j;
+	long long i;
+	unsigned long long j;
 	int line_padding;
 
 	/* Calcula quantos bytes preciso pular no fim de cada linha.
@@ -405,7 +406,7 @@ int salvaHeaderBitmap (FILE* stream, Imagem* img)
 	data [pos++] = 'M';
 
 	/* Tamanho do arquivo. Definimos como sendo 14+40 (dos cabe�alhos) + o espa�o dos dados. */
-	bytes_por_linha = (unsigned long) ceil (img->largura*3.0/4.0)*4;
+	bytes_por_linha = (unsigned long) (ceil(img->largura*3.0/4.0)*4);
 	putLittleEndianULong (14+40+img->altura*bytes_por_linha, &(data [pos]));
 	pos+=4;
 
@@ -464,7 +465,7 @@ int salvaHeaderDIB (FILE* stream, Imagem* img)
 	pos += 4;
 
 	/* Tamanho dos dados. */
-	bytes_por_linha = (unsigned long) ceil (img->largura*3.0/4.0)*4;
+	bytes_por_linha = (unsigned long) (ceil(img->largura*3.0/4.0)*4);
 	putLittleEndianULong (img->altura*bytes_por_linha, &(data [pos]));
 	pos += 4;
 
@@ -499,14 +500,15 @@ int salvaHeaderDIB (FILE* stream, Imagem* img)
 
 int salvaDados (FILE* stream, Imagem* img)
 {
-	long long i, j;
+	long long i;
+	unsigned long long j;
 	unsigned long largura_linha, line_padding;
 	unsigned char* linha;
 	unsigned long pos_linha;
 
 	/* Calcula quantos bytes preciso pular no fim de cada linha.
 	  Aqui, cada linha precisa ter um m�ltiplo de 4. */
-	largura_linha = (unsigned long) ceil (img->largura*3.0/4.0)*4;
+	largura_linha = (unsigned long) (ceil(img->largura*3.0/4.0)*4);
 	line_padding = largura_linha - (img->largura*3);
 	linha = (unsigned char*) malloc (sizeof (unsigned char) * largura_linha);
 

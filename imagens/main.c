@@ -13,18 +13,18 @@ const char* ARQUIVOS [] = //imagens da pasta img foram geradas pelo prof. Bogdan
     "img2/lenna.bmp",
 };
 
-#define N_ARQUIVOS 5 //está testando apenas as 3 primeiras imagens da lista
+#define N_ARQUIVOS 5 //estï¿½ testando apenas as 3 primeiras imagens da lista
 #define TAM_JANELA 5
-#define DEBUG_MODE /* Setar para gravar imagens intermediárias. */
+#define DEBUG_MODE /* Setar para gravar imagens intermediï¿½rias. */
 
 /******************************************************************
-Função principal
+Funï¿½ï¿½o principal
 *******************************************************************/
 int main ()
 {
     int i, op, limiar;
     Imagem *img, *out; // Imagem de entrada/saida
-    // char nome_saida [25]; // String usada para armazenar os nomes das saídas
+    // char nome_saida [25]; // String usada para armazenar os nomes das saï¿½das
 
     printf("\nO que deseja fazer?\n");
     printf("1 - negativo\n");
@@ -33,7 +33,7 @@ int main ()
     printf("4 - contagem de componentes conexos\n");
     scanf("%d", &op);
 
-    if (op == 2) scanf("%d", &limiar);
+    if (op == 2 || op == 3) scanf("%d", &limiar);
 
     for (i = 0; i < N_ARQUIVOS; i++)
     {
@@ -52,7 +52,7 @@ int main ()
                 negativo(img, out);
 
                 #ifdef DEBUG_MODE
-                Imagem* debug = criaImagem (img->largura, img->altura, 1); //poderia salvar direto a out, mas vamos ilustrar como seria uma cópia!
+                Imagem* debug = criaImagem (img->largura, img->altura, 1); //poderia salvar direto a out, mas vamos ilustrar como seria uma cï¿½pia!
                 for (unsigned int row = 0; row < img->altura; row++)
                     for (unsigned int col = 0; col < img->largura; col++)
                         debug->dados [0][row][col] = out->dados [0][row][col];
@@ -72,11 +72,16 @@ int main ()
                 #endif
                 break;
             case 3:
-                printf("Ainda não implementado!!");
-                return 0;
-                //break;
+                out = criaImagem(img->largura, img->altura, 1);
+                filtroMedia(img, out, limiar);
+
+                #ifdef DEBUG_MODE
+                sprintf(outFile,"3-med-%d.bmp", i); //aqui salva direto out
+                salvaImagem (out, outFile);
+                #endif
+                break;
             case 4:
-                printf("Ainda não implementado!!");
+                printf("Ainda nï¿½o implementado!!");
                 return 0;
                 //break;
             default:
