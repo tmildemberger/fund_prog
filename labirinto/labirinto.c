@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 
 typedef struct coordenada {
     int x;
@@ -10,12 +11,14 @@ int** alocaMatriz(int nl, int nc);
 void imprimeMatriz(int **m, int tam);
 void desalocaMatriz(int **mat, int nl);
 void imprimeCriativ(int **m, int nl, int nc, Coordenada *c, int tamc); //a ser implementada na fase das tarefas
-void inicializaLabirinto(int **m, int tam);
+void inicializaLabirinto(int **m, int tam, Coordenada cRato, Coordenada cQueijo);
 void preencheMatrizCusto(int **m, int tam, int xQueijo, int yQueijo);
 Coordenada* calculaCaminho (int **m, int tam, int xRato, int yRato, int *nroPassos);
-//int testaCoordenadas(Coordenada c, int tam, char alvo[]); //a ser implementada na fase dos desafios
+int testaCoordenadas(Coordenada c, int tam, const char alvo[]); //a ser implementada na fase dos desafios
+int testaCoordenadas2(Coordenada *c, int tam, const char alvo[]); //a ser implementada na fase dos desafios
 
 int main() {
+    srand(time(NULL));
     int **lab,
         tam,     //tamanho fixo para fase de testes
         nPassos; //vai armazenar o tamanho do caminho c
@@ -24,17 +27,28 @@ int main() {
                cRato,   //coordenadas do Rato
                cQueijo; //coordenadas do Queijo
 
-    tam = 10;
+    // tam = 10;
+    printf("Tamanho do labirinto: ");
+    scanf("%d", &tam);
 
-    cQueijo.x = 5;
-    cQueijo.y = 2;
+    do {
+        // cQueijo.x = 5;
+        // cQueijo.y = 2;
+        printf("Coordenadas do queijinho: ");
+        scanf("%d %d", &cQueijo.x, &cQueijo.y);
+    } while (testaCoordenadas2(&cQueijo, tam, "queijo") != 1);
 
-    cRato.x = 8;
-    cRato.y = 8;
+    do {
+        // cRato.x = 8;
+        // cRato.y = 8;
+        printf("Coordenadas do ratinho: ");
+        scanf("%d %d", &cRato.x, &cRato.y);
+    } while (testaCoordenadas(cRato, tam, "rato") != 1);
 
-    lab = alocaMatriz(tam, tam);    //aloca labirinto
-    inicializaLabirinto(lab, tam);  //inicializa com configuração padrão
-    imprimeMatriz(lab, tam);        //imprime
+    lab = alocaMatriz(tam, tam);                    //aloca labirinto
+    inicializaLabirinto(lab, tam, cRato, cQueijo);  //inicializa com configuração padrão
+
+    imprimeMatriz(lab, tam);
     preencheMatrizCusto(lab, tam, cQueijo.x, cQueijo.y);
                 //preenche a matriz de custo, considerando a
                 //(5,2) como localização do queijo - configuração fixa
@@ -83,21 +97,21 @@ void imprimeMatriz(int **m, int tam) {
     printf("\n");
 }
 
-void inicializaLabirinto(int **m, int tam) {
+void inicializaLabirinto(int **m, int tam, Coordenada cRato, Coordenada cQueijo) {
     int i, j;
 
     for (i = 0; i < tam; ++i)
         for (j = 0; j < tam; ++j)
             m[i][j] = -1;
 
-    m[2][1] = -2;
-    m[2][2] = -2;
-    m[2][3] = -2;
-    m[3][3] = -2;
-    m[3][4] = -2;
-    m[4][4] = -2;
-    m[5][4] = -2;
-    m[6][4] = -2;
+    for (i = 0; i < tam * tam / 10; ++i) {
+        int x = rand() % (tam - 2) + 1;
+        int y = rand() % (tam - 2) + 1;
+        if ((x == cRato.x   && y == cRato.y) ||
+            (x == cQueijo.x && y == cQueijo.y)) --i;
+        else if (m[x][y] == -1) m[x][y] = -2;
+        else --i;
+    }
 }
 
 
@@ -195,4 +209,20 @@ void imprimeCriativ(int **m, int nl, int nc, Coordenada *c, int tamc) {
         }
         printf("\n");
     }
+}
+
+int testaCoordenadas(Coordenada c, int tam, const char alvo[]) {
+    if (c.x <= 0 || c.x > tam - 1 ||
+        c.y <= 0 || c.y > tam - 1) {
+        printf("Coordenada invalida para %s\n", alvo);
+        return -1;
+    } else return 1;
+}
+
+int testaCoordenadas2(Coordenada *c, int tam, const char alvo[]) {
+    if (c->x <= 0 || c->x >= tam - 1 ||
+        c->y <= 0 || c->y >= tam - 1) {
+        printf("Coordenada invalida para %s\n", alvo);
+        return -1;
+    } else return 1;
 }
