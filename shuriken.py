@@ -2,6 +2,27 @@
 import sys
 import os
 
+def gettem(patterns):
+    import glob
+    ll = set()
+    jj = set()
+    bla = patterns.split(' ')
+    for b in bla:
+        neg = False
+        if b.startswith('-'):
+            neg = True
+            b = b[1:]
+        #print(b, end=' ')
+        kk = set(glob.iglob(b))
+        #print(kk)
+        if neg:
+            jj = set(list(kk) + list(jj))
+        else:
+            ll = set(list(kk) + list(ll))
+    #print(ll - jj)
+    return ll - jj
+    pass
+
 def parse_lines(content):
     idx = 0
     # possible_tokens = ['info', 'path', 'compiler', 'linker', 'libs']
@@ -134,27 +155,28 @@ class metal_parser():
         return
 
     def matches(self, files, selectors):
-        import fnmatch
-        result = []
-        for file in files:
-            # file = os.path.relpath(file, '.')
+        result = gettem(' '.join(selectors))
+        aa = []
+        for fil in result:
+            fil = os.path.relpath(fil, '.')
+            aa.append(fil)
             # print(file)
-            accept = False
-            discarted = False
-            for sel in selectors:
-                negate = sel.startswith('-')
-                if negate:
-                    sel = sel[1:]
-                if not fnmatch.fnmatch(file, sel):
-                    continue
-                if negate:
-                    discarted = True
-                accept = not negate
-            if accept and not discarted:
-                result.append(file)
-        result.sort()
+            #accept = False
+            # discarted = False
+            # for sel in selectors:
+            #     negate = sel.startswith('-')
+            #     if negate:
+            #         sel = sel[1:]
+            #     if not fnmatch.fnmatch(file, sel):
+            #         continue
+            #     if negate:
+            #         discarted = True
+            #     accept = not negate
+            # if accept and not discarted:
+            #     result.append(file)
+        aa.sort()
         # print(result)
-        return result
+        return aa
         pass
 
     def line_exec(self, number, tokens, line):
@@ -401,6 +423,13 @@ class metal_parser():
             # print(target)
             # print(pack)
             for file in pack['build_files']:
+                obj_file = ''
+                if file.endswith('.c') or file.endswith('.cpp'):
+                    local = file
+                    while local.startswith('../'):
+                        local = local[3:]
+                    obj_dir = 'obj/'
+                    obj_file = obj_dir + local + obj_ext
                 if file.endswith('.c'):
                     if not 'c' in lang_rules:
                         ninja_rules += 'CC = gcc\n'
@@ -411,12 +440,12 @@ class metal_parser():
                         ninja_rules += '  deps = gcc\n\n'
                         lang_rules.append('c')
                         pass
-                    obj_dir = 'obj/'
                     # if pack['section']:
+                    obj_dir = 'obj/'
                     #     obj_dir = pack['section'] + '_obj/'
                     #     pass
-                    ninja_builds += 'build {0}{1}{2}: compile_c {1}\n'.format(obj_dir, file, obj_ext)
-                    real_files.append('{0}{1}{2}'.format(obj_dir, file, obj_ext))
+                    ninja_builds += 'build {0}: compile_c {1}\n'.format(obj_file, file)
+                    real_files.append('{0}'.format(obj_file))
                     # if pack['comp_flags']:
                     ninja_builds += '  c_flags = {0}{1}\n'.format(pack['c_only'], pack['compiler_f'])
                         # pass
@@ -438,8 +467,8 @@ class metal_parser():
                         lang_rules.append('cpp')
                         pass
                     obj_dir = 'obj/'
-                    ninja_builds += 'build {0}{1}{2}: compile_cpp {1}\n'.format(obj_dir, file, obj_ext)
-                    real_files.append('{0}{1}{2}'.format(obj_dir, file, obj_ext))
+                    ninja_builds += 'build {0}: compile_cpp {1}\n'.format(obj_file, file)
+                    real_files.append('{0}'.format(obj_file))
                     ninja_builds += '  cxx_flags = {0} {1}\n'.format(pack['cpp_only'], pack['compiler_f'])
                     pass
                 pass
